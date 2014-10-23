@@ -20,6 +20,7 @@
 		8B0BE93419F5F18A00FEA771 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0BE93319F5F18A00FEA771 /* ProfileViewController.swift */; };
 		8B34F48019F6B88B00B7FD3F /* Repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F47F19F6B88B00B7FD3F /* Repo.swift */; };
 		8B3CD3F619F843E400277D1B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CD3F519F843E400277D1B /* User.swift */; };
+		8B79973519F9A08800D0E120 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B79973419F9A08800D0E120 /* StringExtension.swift */; };
 		8BD2017619F859CE0001E7DB /* UserCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD2017519F859CE0001E7DB /* UserCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		8B0BE93319F5F18A00FEA771 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		8B34F47F19F6B88B00B7FD3F /* Repo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repo.swift; sourceTree = "<group>"; };
 		8B3CD3F519F843E400277D1B /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		8B79973419F9A08800D0E120 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtension.swift; path = ../StringExtension.swift; sourceTree = "<group>"; };
 		8BD2017519F859CE0001E7DB /* UserCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -136,6 +138,7 @@
 			children = (
 				8B34F47F19F6B88B00B7FD3F /* Repo.swift */,
 				8B3CD3F519F843E400277D1B /* User.swift */,
+				8B79973419F9A08800D0E120 /* StringExtension.swift */,
 			);
 			name = MODEL;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				8B0BE93019F5C15100FEA771 /* RepositoryViewController.swift in Sources */,
 				8B0BE93419F5F18A00FEA771 /* ProfileViewController.swift in Sources */,
 				8B0BE92A19F5AD0300FEA771 /* SplitContainerViewController.swift in Sources */,
+				8B79973519F9A08800D0E120 /* StringExtension.swift in Sources */,
 				8BD2017619F859CE0001E7DB /* UserCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

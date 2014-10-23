@@ -26,7 +26,7 @@ class UsersViewController: UIViewController, UICollectionViewDelegate, UICollect
    self.usersSearchString = self.usersSearchString + searchBar.text
     NetworkController.sharedInstance.fetchGitData(self.usersSearchString, completionHandler: { (data) -> Void in
       var tempArray = User.parseJSONDataIntoTweets(data)
-      self.userArray = tempArray!
+      //      self.userArray = tempArray!
       NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
         self.userArray = tempArray!
         self.collectionView.reloadData()
@@ -43,6 +43,7 @@ class UsersViewController: UIViewController, UICollectionViewDelegate, UICollect
     let user = self.userArray[indexPath.row]
     
     if user.avatarImage != nil {
+      cell.imageView.image = self.userArray[indexPath.row].avatarImage!
     }
     else{
       NetworkController.sharedInstance.downloadUserAvatar(user, completionHandler: { (image) -> (Void) in

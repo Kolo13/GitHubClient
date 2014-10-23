@@ -16,14 +16,6 @@ class SplitContainerViewController: UIViewController, UISplitViewControllerDeleg
       splitVC.delegate = self
       
       
-      
-      
-      
-      
-      
-      
-      
-      
       if NSUserDefaults.standardUserDefaults().objectForKey("OAuth") == nil {
         println("NSUserDef is empty")
         NetworkController.sharedInstance.requestOAuthAccess()
