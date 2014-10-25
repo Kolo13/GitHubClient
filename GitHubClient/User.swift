@@ -30,19 +30,17 @@ class User {
         for item in rawJSONArray {
           if let tempDictionary = item as? NSDictionary {
             user = User(user: tempDictionary)
-              userArray.append(user)
+            userArray.append(user)
           }
+        }
+      }else{
+        println("Parsing started")
+        if let JSONDictionary = NSJSONSerialization.JSONObjectWithData(rawJSONData, options: nil, error: &error) as? NSDictionary {
+          user = User(user: JSONDictionary)
+          userArray.append(user)
         }
       }
     }
-    return userArray
+      return userArray
   }
-  
-  
-  
-  
-  
-  
-  
-  
 }

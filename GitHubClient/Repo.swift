@@ -11,11 +11,11 @@ import Foundation
 class Repo {
   
   var name: String
-  //var description: String
+  var url: String
   
   init(repo: NSDictionary) {
     self.name = repo["name"] as String
-    //self.description = repo["description"] as String
+    self.url = repo["html_url"] as String
     
   }
   

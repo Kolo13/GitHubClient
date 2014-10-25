@@ -9,7 +9,7 @@
 
 import UIKit
 
-class RepositoryViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,UISearchBarDelegate, UISearchDisplayDelegate {
+class RepositoryViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UINavigationControllerDelegate {
   
   var reposSearchString:String = "https://api.github.com/search/repositories?q="
   var repo: Repo?
@@ -22,36 +22,39 @@ class RepositoryViewController: UIViewController, UITableViewDataSource, UITable
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-    //NetworkController = appDelegate.networkController
-    //NetworkController.sharedInstance.requestOAuthAccess()
   }
   
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-   self.reposSearchString = self.reposSearchString +
-    searchBar.text
+   self.reposSearchString = self.reposSearchString + searchBar.text
     NetworkController.sharedInstance.fetchGitData(self.reposSearchString, completionHandler: { (data) -> Void in
-      var tempArray = Repo.parseJSONDataIntoTweets(data)
-      self.repoArray = tempArray!
+      self.repoArray = Repo.parseJSONDataIntoTweets(data)!
       NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-        self.repoArray = tempArray!
         self.tableView.reloadData()
       })
     })
   }
   
+ 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return repoArray.count
   }
-  
-  
-  
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("CELL", forIndexPath: indexPath) as UITableViewCell
     cell.textLabel.text = self.repoArray[indexPath.row].name
     
     return cell
-    }
   }
+
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let viewController = storyboard?.instantiateViewControllerWithIdentifier("WEB_VC") as WebViewController
+    viewController.repoURL = self.repoArray[indexPath.row].url
+    println(self.repoArray[indexPath.row].url)
+        
+    // Trigger a normal push animations; let navigation controller take over.
+    self.navigationController?.pushViewController(viewController, animated: true)
+  }
+
+
+}
+

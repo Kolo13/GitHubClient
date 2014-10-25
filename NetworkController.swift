@@ -1,3 +1,4 @@
+
 //
 //  NetworkController.swift
 //  GitHubClient
@@ -10,13 +11,18 @@ import UIKit
 import Foundation
 
 class NetworkController: UIViewController {
+  
   var downloadURL:NSURL?
   var gitUserPicURL: NSURL?
+  var gitHubUserPic: UIImage?
   var imageQueue = NSOperationQueue()
   
-  var gitHubUserPic: UIImage?
-  
-  
+  let clientID = "client_id=168b45f8332af3ad6193"
+  let clientSecret = "client_secret=0792ca6b688a6dfb0fa1442e2b15c5cbb3858d4c"
+  let githubOAuthURL = "https://github.com/login/oauth/authorize?"
+  let scope = "scope=user,repo"
+  let redirectURL = "redirect_uri=somefancyname://test"
+  let gitHubPostURL = "https://github.com/login/oauth/access_token"
   
   
   class var sharedInstance: NetworkController {
@@ -29,22 +35,14 @@ class NetworkController: UIViewController {
     }
     return Static.instance!
   }
+
   
-  let clientID = "client_id=168b45f8332af3ad6193"
-  let clientSecret = "client_secret=0792ca6b688a6dfb0fa1442e2b15c5cbb3858d4c"
-  let githubOAuthURL = "https://github.com/login/oauth/authorize?"
-  let scope = "scope=user,repo"
-  let redirectURL = "redirect_uri=somefancyname://test"
-  let gitHubPostURL = "https://github.com/login/oauth/access_token"
-  
-  //takes user out of app and send them to browser
   func requestOAuthAccess() {
     let url = githubOAuthURL + clientID + "&" + redirectURL + "&" + scope
     UIApplication.sharedApplication().openURL(NSURL(string: url)!)
   } 
   
   func handleOAuthURL(callbackURL: NSURL) {
-    
     let query = callbackURL.query
     let components = query?.componentsSeparatedByString("code=")
     let code = components?.last
@@ -58,26 +56,26 @@ class NetworkController: UIViewController {
     request.setValue("\(length)", forHTTPHeaderField: "Content-Length")
     request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
     request.HTTPBody = postData
+    
     let dataTask = NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
       if error != nil {
         println("Hello this is an error")
-
       }else{
         if let httpResponse = response as? NSHTTPURLResponse {
           switch httpResponse.statusCode {
-          case 200...204:
-            var tokenResponse = NSString(data: data, encoding: NSASCIIStringEncoding)
-            //println("token response \(tokenResponse)")
-            let fullMessage = tokenResponse!.componentsSeparatedByString("=")
-            let  second = fullMessage[1] as String
-            let almostToken = second.componentsSeparatedByString("&")
-            let finalToken = almostToken[0]
-            
-            NSUserDefaults.standardUserDefaults().setObject(finalToken, forKey: "OAuth")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            case 200...204:
+              var tokenResponse = NSString(data: data, encoding: NSASCIIStringEncoding)
+              //println("token response \(tokenResponse)")
+              let fullMessage = tokenResponse!.componentsSeparatedByString("=")
+              let  second = fullMessage[1] as String
+              let almostToken = second.componentsSeparatedByString("&")
+              let finalToken = almostToken[0]
               
-          default:
-            println("status code \(httpResponse)")
+              NSUserDefaults.standardUserDefaults().setObject(NSString(string: finalToken), forKey: "OAuth")
+              NSUserDefaults.standardUserDefaults().synchronize()
+                
+            default:
+              println("status code \(httpResponse)")
             }
           }
         }
@@ -85,12 +83,7 @@ class NetworkController: UIViewController {
     })
     dataTask.resume()
   }
-  
-    override func viewDidLoad() {
-      super.viewDidLoad()
-      
-  }
-  
+
   
     func fetchGitData(searchTerm: String, completionHandler : (rawJSON: NSData) -> Void) {
       
@@ -98,10 +91,9 @@ class NetworkController: UIViewController {
       let gitSession = NSURLSession.sharedSession()
       let request = NSMutableURLRequest(URL: self.downloadURL!)
       let token = NSUserDefaults.standardUserDefaults().objectForKey("OAuth") as String
+      request.setValue("token " + token, forHTTPHeaderField: "Authorization")
       
-      request.setValue("token" + token, forHTTPHeaderField: "Authorization")
-      
-      let gitTask = gitSession.dataTaskWithURL(self.downloadURL!, completionHandler: {(data, response, error) -> Void in
+        let gitTask = gitSession.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
         var JSONerr: NSError?
 
         if let httpResponse = response as? NSHTTPURLResponse  {
@@ -123,7 +115,6 @@ class NetworkController: UIViewController {
 
     
     func downloadUserAvatar(user : User, completionHandler : (image : UIImage) -> (Void)) {
-      
       self.imageQueue.addOperationWithBlock { () -> Void in
         let url = NSURL(string: user.avatarURL)
         let imageData = NSData(contentsOfURL: url!) //network call
@@ -132,9 +123,7 @@ class NetworkController: UIViewController {
         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
           completionHandler(image: avatarImage!)
         })
-      
       }
     }
-
 
 }
