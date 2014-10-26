@@ -34,6 +34,11 @@ class RepositoryViewController: UIViewController, UITableViewDataSource, UITable
     })
   }
   
+  func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    return text.validate()
+    
+  }
+
  
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return repoArray.count
@@ -49,8 +54,7 @@ class RepositoryViewController: UIViewController, UITableViewDataSource, UITable
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let viewController = storyboard?.instantiateViewControllerWithIdentifier("WEB_VC") as WebViewController
     viewController.repoURL = self.repoArray[indexPath.row].url
-    println(self.repoArray[indexPath.row].url)
-        
+    
     // Trigger a normal push animations; let navigation controller take over.
     self.navigationController?.pushViewController(viewController, animated: true)
   }

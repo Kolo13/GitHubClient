@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class UsersViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate, UISearchDisplayDelegate, UINavigationControllerDelegate {
+class UsersViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate, UISearchDisplayDelegate {
   
   var usersSearchString: String = "https://api.github.com/search/users?q="
   var userArray = [User]()
@@ -17,30 +17,34 @@ class UsersViewController: UIViewController, UICollectionViewDelegate, UICollect
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var searchBar: UISearchBar!
  
+  
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.navigationController?.delegate = self
+    
+    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    self.navigationController?.delegate = appDelegate
+
   }
   
   override func viewWillDisappear(animated: Bool) {
     super.viewWillDisappear(animated)
-    self.navigationController?.delegate = nil
   }
   
-  override func viewWillAppear(animated: Bool) {
-    super.viewWillAppear(animated)
-    self.navigationController?.delegate = self
-  }
 
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
    self.usersSearchString = self.usersSearchString + searchBar.text
     NetworkController.sharedInstance.fetchGitData(self.usersSearchString, completionHandler: { (data) -> Void in
       var tempArray = User.parseJSONDataIntoTweets(data)
       NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-        self.userArray = tempArray!
+        self.userArray = tempArray
         self.collectionView.reloadData()
       })
     })
+  }
+  func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    return text.validate()
+
   }
 
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -50,6 +54,8 @@ class UsersViewController: UIViewController, UICollectionViewDelegate, UICollect
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("USERS_CELL", forIndexPath: indexPath) as UserCollectionViewCell
     let user = self.userArray[indexPath.row]
+    cell.loginName.text = self.userArray[indexPath.row].login
+    
     
     if user.avatarImage != nil {
       cell.imageView.image = self.userArray[indexPath.row].avatarImage!
@@ -86,23 +92,6 @@ class UsersViewController: UIViewController, UICollectionViewDelegate, UICollect
     self.navigationController?.pushViewController(viewController, animated: true)
   }
   
-
-
-  func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    if let mainViewController = fromVC as? UsersViewController {
-      let animator = ShowImageAnimator()
-      animator.origin = mainViewController.origin
-      
-      return animator
-      
-    }else if let DetailViewController = fromVC as? DetailViewController {
-      let animator = HideImageAnimator()
-      animator.origin = DetailViewController.reverseOrigin
-      
-      return animator
-    }
-    return nil
-  }
 
   
  

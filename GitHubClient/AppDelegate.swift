@@ -1,3 +1,4 @@
+
 //
 //  AppDelegate.swift
 //  GitHubClient
@@ -10,11 +11,12 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UINavigationControllerDelegate
+{
 
   var window: UIWindow?
   //var networkController = NetworkController()
-
+  
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // storing to NSUSerDefaults
 //    let key = "OAuth"
@@ -34,6 +36,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Override point for customization after application launch.
     return true
   }
+  
+  
+  func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    
+    if let mainViewController = fromVC as? UsersViewController {
+      if let destinationViewController = toVC  as? DetailViewController {
+        let animator = ShowImageAnimator()
+        animator.origin = mainViewController.origin
+        return animator
+      }
+    }else if let mainViewController = fromVC as? DetailViewController {
+      if let destinationViewController = toVC as? UsersViewController {
+        let animator = HideImageAnimator()
+        animator.origin = mainViewController.reverseOrigin
+        
+        return animator
+      }
+    }
+    return nil
+  }
+
+  
+  
   
   func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
     NetworkController.sharedInstance.handleOAuthURL(url)

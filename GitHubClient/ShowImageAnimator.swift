@@ -41,7 +41,8 @@ class ShowImageAnimator: NSObject, UIViewControllerAnimatedTransitioning {
       toViewController.imageView.frame = toViewController.view.bounds
       }) { (finished) -> Void in
         // When finished, hide our fromViewController
-        //fromViewController.view.alpha = 0.0
+        fromViewController.view.alpha = 0.0
+        
         // And tell the transitionContext we're done
         transitionContext.completeTransition(finished)
     }

@@ -26,9 +26,11 @@ class HideImageAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     containerView.insertSubview(toViewController.view, aboveSubview: fromViewController.view)
     
     UIView.animateWithDuration(1.0, delay: 0.0, options: nil, animations: { () -> Void in
+      fromViewController.view.alpha = 1.0
+      toViewController.view.alpha = 1.0
+
       fromViewController.view.frame = self.origin!
       fromViewController.imageView.frame = fromViewController.view.bounds
-      toViewController.view.alpha = 1.0
       }) { (finished) -> Void in
         transitionContext.completeTransition(finished)
     }

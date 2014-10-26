@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController, UINavigationControllerDelegate {
+class DetailViewController: UIViewController {
 
   var image: UIImage?
   var reverseOrigin: CGRect?
@@ -18,5 +18,10 @@ class DetailViewController: UIViewController, UINavigationControllerDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.imageView.image = image
+    
+    
+    
   }
+  
+
 }
