@@ -146,7 +146,6 @@
 			children = (
 				8B34F47F19F6B88B00B7FD3F /* Repo.swift */,
 				8B3CD3F519F843E400277D1B /* User.swift */,
-				8B79973419F9A08800D0E120 /* StringExtension.swift */,
 			);
 			name = MODEL;
 			sourceTree = "<group>";
@@ -154,8 +153,7 @@
 		8B34F48219F6F91800B7FD3F /* CONTROLLER */ = {
 			isa = PBXGroup;
 			children = (
-				8B79973A19F9C3FF00D0E120 /* HideImageAnimator.swift */,
-				8B79973819F9C14500D0E120 /* ShowImageAnimator.swift */,
+				8B79973419F9A08800D0E120 /* StringExtension.swift */,
 				8B0BE92F19F5C15100FEA771 /* RepositoryViewController.swift */,
 				8B0BE92D19F5BAF200FEA771 /* NetworkController.swift */,
 				8B0BE93119F5D38600FEA771 /* UsersViewController.swift */,
@@ -170,6 +168,8 @@
 		8B34F48319F6F92900B7FD3F /* VIEW */ = {
 			isa = PBXGroup;
 			children = (
+				8B79973A19F9C3FF00D0E120 /* HideImageAnimator.swift */,
+				8B79973819F9C14500D0E120 /* ShowImageAnimator.swift */,
 				8BD2017519F859CE0001E7DB /* UserCollectionViewCell.swift */,
 			);
 			name = VIEW;

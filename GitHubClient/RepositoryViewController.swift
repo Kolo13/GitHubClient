@@ -28,10 +28,12 @@ class RepositoryViewController: UIViewController, UITableViewDataSource, UITable
    self.reposSearchString = self.reposSearchString + searchBar.text
     NetworkController.sharedInstance.fetchGitData(self.reposSearchString, completionHandler: { (data) -> Void in
       self.repoArray = Repo.parseJSONDataIntoTweets(data)!
-      NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
         self.tableView.reloadData()
-      })
+     })
     })
+    self.searchBar.resignFirstResponder()
+
   }
   
   func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
